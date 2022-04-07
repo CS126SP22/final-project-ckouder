@@ -31,9 +31,9 @@ if(${CMAKE_VERSION} VERSION_LESS 3.14)
 endif()
 
 FetchContent_Declare(
-        catch2
-        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-        GIT_TAG v2.x
+    catch2
+    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+    GIT_TAG v2.x
 )
 
 # Adds Catch2 testing library
@@ -49,9 +49,10 @@ get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 
 include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
-list(APPEND CORE_SOURCE_FILES src/engine.cc
-                              src/network.cc
-                              src/visualizer.cc)
+list(APPEND CORE_SOURCE_FILES src/visualizer.cc
+                              src/renderables.cc
+                              src/engine.cc
+                              src/network.cc)
 
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES})
 
@@ -59,18 +60,15 @@ list(APPEND TEST_FILES  tests/test_engine.cc
                         tests/test_network.cc
                         tests/test_visualizer.cc)
 
-add_executable(visualizer apps/main.cc ${CORE_SOURCE_FILES})
-target_include_directories(visualizer PRIVATE include)
-
 ci_make_app(
-        APP_NAME        bitcoin-transaction-visualizer
+        APP_NAME        visualizer
         CINDER_PATH     ${CINDER_PATH}
         SOURCES         apps/main.cc ${SOURCE_FILES}
         INCLUDES        include
 )
 
 ci_make_app(
-        APP_NAME        bitcoin-transaction-visualizer-test
+        APP_NAME        visualizer-test
         CINDER_PATH     ${CINDER_PATH}
         SOURCES         tests/test_main.cc ${SOURCE_FILES} ${TEST_FILES}
         INCLUDES        include
@@ -78,5 +76,5 @@ ci_make_app(
 )
 
 if(MSVC)
-    set_property(TARGET naive-bayes-test APPEND_STRING PROPERTY LINK_FLAGS " /SUBSYSTEM:CONSOLE")
+    set_property(TARGET visualizer-test APPEND_STRING PROPERTY LINK_FLAGS " /SUBSYSTEM:CONSOLE")
 endif()

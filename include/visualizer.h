@@ -4,15 +4,18 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 
-namespace bitcoin_transaction_visualizer
+namespace bitcoin
 {
 
-class BitcoinTransactionVisualizer : public ci::app::App {
+class BitcoinApp : public ci::app::App {
  public:
-  BitcoinTransactionVisualizer();
+  BitcoinApp();
 
   void draw() override;
   void update() override;
-}
 
-} // namespace bitcoin_transaction_visualizer
+ private:
+  ci::Color frame_color = ci::Color("white");
+};
+
+} // namespace bitcoin
