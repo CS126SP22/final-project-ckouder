@@ -15,6 +15,8 @@ class BitcoinApp : public ci::app::App {
   void update() override;
 
  private:
+  const int kWindowHeight = 800;
+  const int kWindowWidth = 600;
   ci::Color frame_color = ci::Color("white");
 };
 

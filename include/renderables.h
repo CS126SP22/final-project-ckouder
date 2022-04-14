@@ -6,22 +6,28 @@ using glm::vec2;
 
 namespace bitcoin
 {
-  struct Particle {
-    vec2 position;
+  enum Renderables {
+    ATOM,
+    SQUARE,
+    CIRCLE
+  };
+
+  struct RenderableObject {
     vec2 velocity;
-
-    virtual void Render();
+    // float rotation;
+    ci::Color color = ci::Color("red");
+    virtual Renderables GetType() const;
   };
 
-  struct Square : Particle {
+  struct Square : RenderableObject {
     vec2 size;
-
-    void Render() override;
+    Renderables GetType() const;
   };
 
-  struct Circle : Particle {
+  struct Circle : RenderableObject {
     float radius;
+    Renderables GetType() const;
+  };  
 
-    void Render() override;
-  }; 
+  void Render(const RenderableObject*, const vec2&);
 } // namespace bitcoin

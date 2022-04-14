@@ -1,17 +1,41 @@
 #include "renderables.h"
 
+using cinder::Rectf;
+
 namespace bitcoin {
 
-void Particle::Render() {
-
+Renderables RenderableObject::GetType() const {
+  return ATOM;
 }
 
-void Square::Render() {
-
+Renderables Square::GetType() const {
+  return SQUARE;
 }
 
-void Circle::Render() {
+Renderables Circle::GetType() const {
+  return CIRCLE;
+}
 
+void Render(
+  const RenderableObject* object,
+  const vec2& position) {
+    ci::gl::color(object->color);
+    switch (object->GetType()) {
+
+      case SQUARE:
+        ci::gl::drawSolidRect(Rectf(
+          position - (((Square*)object)->size) / vec2(2),
+          position + (((Square*)object)->size) / vec2(2)
+        ));
+        break;
+
+      case CIRCLE:
+        ci::gl::drawSolidCircle(position, ((Circle*)object)->radius);
+        break;
+
+      case ATOM:
+        break;
+    }
 }
 
 }// namespace bitcoin
