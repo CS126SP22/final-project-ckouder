@@ -4,8 +4,8 @@ using cinder::Rectf;
 
 namespace bitcoin {
 
-Renderables RenderableObject::GetType() const {
-  return ATOM;
+Renderables Particle::GetType() const {
+  return PARTICLE;
 }
 
 Renderables Square::GetType() const {
@@ -16,9 +16,12 @@ Renderables Circle::GetType() const {
   return CIRCLE;
 }
 
-void Render(
-  const RenderableObject* object,
-  const vec2& position) {
+Renderables Line::GetType() const {
+  return LINE;
+}
+
+void Render(const Particle* object) {
+    const vec2& position = *(object->position);
     ci::gl::color(object->color);
     switch (object->GetType()) {
 
@@ -33,7 +36,11 @@ void Render(
         ci::gl::drawSolidCircle(position, ((Circle*)object)->radius);
         break;
 
-      case ATOM:
+      case LINE:
+        ci::gl::drawLine(position, *(((Line*)object)->to));
+        break;
+
+      case PARTICLE:
         break;
     }
 }

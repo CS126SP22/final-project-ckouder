@@ -16,8 +16,17 @@ namespace bitcoin {
     Circle circle;
     circle.radius = 5;
 
-    Render(&square, vec2(10));
-    Render(&circle, vec2(100));
+    Line line;
+
+    vec2 a(10), b(100);
+    square.position = &a;
+    circle.position = &b;
+    line.position = &a;
+    line.to = &b;
+
+    Render(&square);
+    Render(&circle);
+    Render(&line);
   }
 
   void BitcoinApp::update() {

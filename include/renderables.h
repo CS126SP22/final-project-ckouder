@@ -7,27 +7,34 @@ using glm::vec2;
 namespace bitcoin
 {
   enum Renderables {
-    ATOM,
+    PARTICLE,
     SQUARE,
-    CIRCLE
+    CIRCLE,
+    LINE
   };
 
-  struct RenderableObject {
+  struct Particle {
+    vec2* position;
     vec2 velocity;
     // float rotation;
     ci::Color color = ci::Color("red");
     virtual Renderables GetType() const;
   };
 
-  struct Square : RenderableObject {
+  struct Square : Particle {
     vec2 size;
     Renderables GetType() const;
   };
 
-  struct Circle : RenderableObject {
+  struct Circle : Particle {
     float radius;
     Renderables GetType() const;
-  };  
+  };
 
-  void Render(const RenderableObject*, const vec2&);
+  struct Line : Particle {
+    vec2* to;
+    Renderables GetType() const;
+  };
+
+  void Render(const Particle*);
 } // namespace bitcoin
