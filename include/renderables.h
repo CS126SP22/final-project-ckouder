@@ -14,8 +14,10 @@ namespace bitcoin
   };
 
   struct Particle {
-    vec2* position;
-    vec2 velocity;
+    vec2* position = nullptr;
+    vec2* velocity = nullptr;
+    vec2* acceleration = nullptr;
+    
     // float rotation;
     ci::Color color = ci::Color("red");
     virtual Renderables GetType() const;
