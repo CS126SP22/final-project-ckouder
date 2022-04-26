@@ -1,11 +1,13 @@
 #pragma once
 
+#include "engine.h"
 #include "cinder/gl/gl.h"
 
 using glm::vec2;
 
 namespace bitcoin
 {
+
   enum Renderables {
     PARTICLE,
     SQUARE,
@@ -13,30 +15,25 @@ namespace bitcoin
     LINE
   };
 
-  struct Particle {
-    vec2* position = nullptr;
-    vec2* velocity = nullptr;
-    vec2* acceleration = nullptr;
-    
-    // float rotation;
+  struct Renderable : Atom {
     ci::Color color = ci::Color("red");
     virtual Renderables GetType() const;
   };
 
-  struct Square : Particle {
+  struct Square : Renderable {
     vec2 size;
     Renderables GetType() const;
   };
 
-  struct Circle : Particle {
+  struct Circle : Renderable {
     float radius;
     Renderables GetType() const;
   };
 
-  struct Line : Particle {
+  struct Line : Renderable {
     vec2* to;
     Renderables GetType() const;
   };
 
-  void Render(const Particle*);
+  void Render(const Renderable*);
 } // namespace bitcoin

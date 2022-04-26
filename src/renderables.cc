@@ -4,7 +4,7 @@ using cinder::Rectf;
 
 namespace bitcoin {
 
-Renderables Particle::GetType() const {
+Renderables Renderable::GetType() const {
   return PARTICLE;
 }
 
@@ -20,8 +20,8 @@ Renderables Line::GetType() const {
   return LINE;
 }
 
-void Render(const Particle* object) {
-    const vec2& position = *(object->position);
+void Render(const Renderable* object) {
+    const vec2& position = object->position;
     ci::gl::color(object->color);
     switch (object->GetType()) {
 

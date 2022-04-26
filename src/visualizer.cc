@@ -4,41 +4,49 @@
 namespace bitcoin {
   BitcoinApp::BitcoinApp() {
     ci::app::setWindowSize(kWindowHeight, kWindowWidth);
-    Square* square = new Square();
-    Circle* circle = new Circle();
-    Line* line = new Line();
-    vec2* position_a = new vec2(10),
-        * position_b = new vec2(100),
-        * velocity_a = new vec2(10),
-        * velocity_b = new vec2(-10),
-        * accelera_a = new vec2(5),
-        * accelera_b = new vec2(-5);
-    square->size = vec2(10);
-    circle->radius = 5;
-    square->position = position_a;
-    square->velocity = velocity_a;
-    square->acceleration = accelera_a;
-    circle->position = position_b;
-    circle->velocity = velocity_b;
-    circle->acceleration = accelera_b;
-    line->position = position_a;
-    line->to = position_b;
-    objects.push_back(square);
-    objects.push_back(circle);
-    objects.push_back(line);
+    Circle* circle1 = new Circle();
+    Circle* circle2 = new Circle();
+    Circle* circle3 = new Circle();
+    // Line* line = new Line();
+    vec2 position_a(500, 400),
+        //  position_b(400, 400),
+         position_b(300, 400);
+        //  velocity_a(0.01),
+        //  velocity_b(-0.01);
+        //  accelera_a(5),
+        //  accelera_b(-5);
+    circle1->radius = 5;
+    circle2->radius = 5;
+    circle3->radius = 5;
+    // circle1->position = position_b;
+    circle2->position = position_a;
+    circle3->position = position_b;
+    // circle2->velocity = velocity_a;
+    // circle3->velocity = velocity_b;
+    // square->velocity = velocity_a;
+    // square->acceleration = accelera_a;
+    // circle->velocity = velocity_b;
+    // circle->acceleration = accelera_b;
+    // line->position = position_a;
+    // line->to = position_b;
+    // objects.push_back(circle1);
+    objects.push_back(circle2);
+    objects.push_back(circle3);
+    
+    // engine.Add(circle1);
+    engine.Add(circle3);
+    engine.Add(circle2);
   }
 
   void BitcoinApp::draw() {
     ci::Color background_color("black");
     ci::gl::clear(background_color);
-    for (Particle* particle : objects) {
-      Render(particle);
+    for (Renderable* Renderable : objects) {
+      Render(Renderable);
     }
   }
 
   void BitcoinApp::update() {
-    for (Particle* particle : objects) {
-      engine.Compute(particle);
-    }
+    engine.Compute();
   }
 } // namespace bitcoin

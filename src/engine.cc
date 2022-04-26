@@ -2,27 +2,42 @@
 
 namespace bitcoin
 {
-  void Engine::ComputeAcceleration(const Particle* particle) {
-    
+  void Engine::Add(Atom* atom) {
+    atoms.push_back(atom);
   }
 
-  void Engine::ComputeVelocity(const Particle* particle) {
-    if (particle->velocity == nullptr || particle->acceleration == nullptr) {
-      return;
+  void Engine::ComputeAcceleration(Atom* atom) {
+    for (auto other : atoms) {
+      vec2 diff = atom->position - other->position;
+      float distance = glm::length2(diff);
+      float field_range = glm::length2(atom->field_range + other->field_range);
+      if (other == atom || distance > field_range) {
+        continue;
+      }
+      atom->acceleration -= vec2(
+        diff[0] == 0 ? 0 : (diff[0] < 0 ? other->field[0] : -other->field[0]),
+        diff[1] == 0 ? 0 : (diff[1] < 0 ? other->field[1] : -other->field[1])
+      );
     }
-    *(particle->velocity) += *(particle->acceleration) / S;
   }
 
-  void Engine::ComputePosition(const Particle* particle) {
-    if (particle->position == nullptr || particle->velocity == nullptr) {
-      return;
+  void Engine::ComputeVelocity(Atom* atom) {
+    atom->velocity += atom->acceleration / S;
+  }
+
+  void Engine::ComputePosition(Atom* atom) {
+    atom->position += atom->velocity / S;
+  }
+
+  void Engine::Compute() {
+    for (auto atom : atoms) {
+      ComputeAcceleration(atom);
     }
-    *(particle->position) += *(particle->velocity) / S;
-  }
-
-  void Engine::Compute(const Particle* particle) {
-    ComputeAcceleration(particle);
-    ComputeVelocity(particle);
-    ComputePosition(particle);
+    for (auto atom : atoms) {
+      ComputeVelocity(atom);
+    }
+    for (auto atom : atoms) {
+      ComputePosition(atom);
+    }
   }
 } // namespace bitcoin
