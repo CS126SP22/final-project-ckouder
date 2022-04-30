@@ -9,8 +9,14 @@ namespace bitcoin
     throw NOT_IMPLEMENTED;
   }
 
+  void ForceEmitter::TryApplyForce(Atom* atom) {
+    if (ShouldTrigger(atom)) {
+      ApplyForce(atom);
+    }
+  }
+
   bool ForceEmitter::ShouldTrigger(Atom* atom) {
-    throw NOT_IMPLEMENTED;
+    return !expired;
   }
 
   void ForceEmitter::ApplyForce(Atom* atom) {
@@ -32,7 +38,9 @@ namespace bitcoin
 
   bool DistanceForceEmitter::ShouldTrigger(Atom* atom) {
     float distance = glm::length2(atom->position - *origin_);
-    return distance < range_ && distance > 0;
+    return ForceEmitter::ShouldTrigger(atom)
+      && distance < range_ 
+      && distance > 0;
   }
 
   void DistanceForceEmitter::ApplyForce(Atom* atom) {
@@ -50,7 +58,8 @@ namespace bitcoin
   }
 
   bool StringForceEmitter::ShouldTrigger(Atom* atom) {
-    return (atom == a_ || atom == b_) 
+    return ForceEmitter::ShouldTrigger(atom)
+      && (atom == a_ || atom == b_) 
       && glm::length(a_->position - b_->position) > min_trigger_;
   }
 

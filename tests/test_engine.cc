@@ -2,7 +2,6 @@
 #include "engine.h"
 
 using bitcoin::Atom;
-using bitcoin::Force;
 using bitcoin::Engine;
 
 TEST_CASE("Test two atoms") {
@@ -11,8 +10,8 @@ TEST_CASE("Test two atoms") {
   Force *fa = new Force(),
         *fb = new Force();
   float f = 1000;
-  e->Add(a);
-  e->Add(b);
+  e->AddAtom(a);
+  e->AddAtom(b);
 
   a->position = vec2(0, 0);
   b->position = vec2(100, 0);

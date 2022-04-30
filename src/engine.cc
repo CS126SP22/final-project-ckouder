@@ -1,34 +1,20 @@
 #include "engine.h"
+#include "force.h"
 
 namespace bitcoin
 {
-  // vec2 Force::GetPosition() {
-  //   return position_ref == nullptr ? position : *(position_ref);
-  // }
+  void Engine::AddAtom(Atom* atom) {
+    atoms_.push_back(atom);
+  }
 
-  // void Force::SetPosition(vec2* ref) {
-  //   position_ref = ref;
-  // }
-
-  // void Force::SetPosition(vec2 p) {
-  //   position = p;
-  // }
-
-  void Engine::Add(Atom* atom) {
-    atoms.push_back(atom);
+  void Engine::AddForceEmitter(ForceEmitter* emitter) {
+    forces_.push_back(emitter);
   }
 
   void Engine::ComputeAcceleration(Atom* atom) {
-    // for (auto force : atom->forces) {
-      // vec2 diff = atom->position - force->GetPosition();
-      // float distance = glm::length(diff);
-      // if (distance < force->range) {
-        // atom->acceleration -= vec2(
-        //   diff[0] == 0 ? 0 : (diff[0] < 0 ? force->magnitude[0] : -force->magnitude[0]),
-        //   diff[1] == 0 ? 0 : (diff[1] < 0 ? force->magnitude[1] : -force->magnitude[1])
-        // );
-      // }
-    // }
+    for (auto emitter : forces_) {
+      emitter->TryApplyForce(atom);
+    }
   }
 
   void Engine::ComputeVelocity(Atom* atom) {
@@ -40,13 +26,13 @@ namespace bitcoin
   }
 
   void Engine::Compute() {
-    for (auto atom : atoms) {
+    for (auto atom : atoms_) {
       ComputeAcceleration(atom);
     }
-    for (auto atom : atoms) {
+    for (auto atom : atoms_) {
       ComputeVelocity(atom);
     }
-    for (auto atom : atoms) {
+    for (auto atom : atoms_) {
       ComputePosition(atom);
     }
   }

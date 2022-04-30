@@ -19,8 +19,8 @@ namespace bitcoin {
     objects.push_back(circle2);
     objects.push_back(circle3);
     
-    engine.Add(circle3);
-    engine.Add(circle2);
+    engine.AddAtom(circle3);
+    engine.AddAtom(circle2);
   }
 
   void BitcoinApp::draw() {

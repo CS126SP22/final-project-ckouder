@@ -16,14 +16,16 @@ struct Atom {
 
 class Engine {
   public:
-  void Add(Atom*);
+  void AddAtom(Atom*);
+  void AddForceEmitter(ForceEmitter*);
   void ComputeAcceleration(Atom*);
   void ComputeVelocity(Atom*);
   void ComputePosition(Atom*);
   void Compute();
 
   private:
-  std::vector<Atom*> atoms;
+  std::vector<Atom*> atoms_;
+  std::vector<ForceEmitter*> forces_;
 };
 
 } // namespace bitcoin

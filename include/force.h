@@ -15,6 +15,7 @@ namespace bitcoin
   class ForceEmitter {
     public:
     bool IsExpired();
+    void TryApplyForce(Atom*);
 
     virtual ForceEmitterType GetType();
     virtual bool ShouldTrigger(Atom*);
