@@ -51,6 +51,7 @@ include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
 list(APPEND CORE_SOURCE_FILES src/visualizer.cc
                               src/renderables.cc
+                              src/force.cc
                               src/engine.cc
                               src/network.cc)
 
