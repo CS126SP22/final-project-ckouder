@@ -8,12 +8,24 @@ using glm::vec2;
 namespace bitcoin
 {
 
+struct Force {
+  vec2 magnitude = vec2(0);
+  float range = 1000;
+
+  vec2 GetPosition();
+  void SetPosition(vec2*);
+  void SetPosition(vec2);
+
+  private:
+  vec2 position = vec2(0);
+  vec2* position_ref = nullptr;
+};
+
 struct Atom {
   vec2 position = vec2(0);
   vec2 velocity = vec2(0);
   vec2 acceleration = vec2(0);
-  vec2 field = vec2(-10);
-  vec2 field_range = vec2(1000);
+  std::vector<Force*> forces;
 };
 
 class Engine {

@@ -2,22 +2,32 @@
 
 namespace bitcoin
 {
+  vec2 Force::GetPosition() {
+    return position_ref == nullptr ? position : *(position_ref);
+  }
+
+  void Force::SetPosition(vec2* ref) {
+    position_ref = ref;
+  }
+
+  void Force::SetPosition(vec2 p) {
+    position = p;
+  }
+
   void Engine::Add(Atom* atom) {
     atoms.push_back(atom);
   }
 
   void Engine::ComputeAcceleration(Atom* atom) {
-    for (auto other : atoms) {
-      vec2 diff = atom->position - other->position;
-      float distance = glm::length2(diff);
-      float field_range = glm::length2(atom->field_range + other->field_range);
-      if (other == atom || distance > field_range) {
-        continue;
+    for (auto force : atom->forces) {
+      vec2 diff = atom->position - force->GetPosition();
+      float distance = glm::length(diff);
+      if (distance < force->range) {
+        atom->acceleration -= vec2(
+          diff[0] == 0 ? 0 : (diff[0] < 0 ? force->magnitude[0] : -force->magnitude[0]) / distance,
+          diff[1] == 0 ? 0 : (diff[1] < 0 ? force->magnitude[1] : -force->magnitude[1]) / distance
+        );
       }
-      atom->acceleration -= vec2(
-        diff[0] == 0 ? 0 : (diff[0] < 0 ? other->field[0] : -other->field[0]),
-        diff[1] == 0 ? 0 : (diff[1] < 0 ? other->field[1] : -other->field[1])
-      );
     }
   }
 
