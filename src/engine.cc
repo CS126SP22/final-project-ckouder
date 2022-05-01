@@ -7,13 +7,13 @@ namespace bitcoin
     atoms_.push_back(atom);
   }
 
-  void Engine::AddForceEmitter(ForceEmitter* emitter) {
-    forces_.push_back(emitter);
+  void Engine::AddForce(ForceConfig* config) {
+    forces_.push_back(config);
   }
 
   void Engine::ComputeAcceleration(Atom* atom) {
-    for (auto emitter : forces_) {
-      emitter->TryApplyForce(atom);
+    for (auto force : forces_) {
+      force->TryApply(atom);
     }
   }
 

@@ -1,4 +1,5 @@
 #pragma once
+#include "force.h"
 #include "cinder/gl/gl.h"
 
 #define S 50.0f
@@ -8,16 +9,10 @@ using glm::vec2;
 namespace bitcoin
 {
 
-struct Atom {
-  vec2 position = vec2(0);
-  vec2 velocity = vec2(0);
-  vec2 acceleration = vec2(0);
-};
-
 class Engine {
   public:
   void AddAtom(Atom*);
-  void AddForceEmitter(ForceEmitter*);
+  void AddForce(ForceConfig*);
   void ComputeAcceleration(Atom*);
   void ComputeVelocity(Atom*);
   void ComputePosition(Atom*);
@@ -25,7 +20,7 @@ class Engine {
 
   private:
   std::vector<Atom*> atoms_;
-  std::vector<ForceEmitter*> forces_;
+  std::vector<ForceConfig*> forces_;
 };
 
 } // namespace bitcoin

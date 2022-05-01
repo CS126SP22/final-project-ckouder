@@ -1,57 +1,55 @@
 #pragma once
-#include "engine.h"
+#include "cinder/gl/gl.h"
 
 using glm::vec2;
 
 namespace bitcoin
 {
-  typedef vec2 Force;
-
-  enum ForceEmitterType {
-    DISTANCE,
-    STRING,
+  struct Atom {
+    vec2 position = vec2(0);
+    vec2 velocity = vec2(0);
+    vec2 acceleration = vec2(0);
   };
 
-  class ForceEmitter {
-    public:
-    bool IsExpired();
-    void TryApplyForce(Atom*);
-
-    virtual ForceEmitterType GetType();
-    virtual bool ShouldTrigger(Atom*);
-    virtual void ApplyForce(Atom*);
-
-    protected:
+  struct ForceConfig {
     bool expired = false;
-    vec2 magnitude_;
+    
+    ForceConfig() {};
+    virtual ~ForceConfig() {};
 
-    void SetExpired();
+    void TryApply(Atom*);
+    virtual bool ShouldTrigger(Atom*);
+    virtual void Apply(Atom*);
   };
 
-  class DistanceForceEmitter : ForceEmitter {
-    public:
-    DistanceForceEmitter();
+  struct StringForceConfig : ForceConfig {
+    Atom* a = nullptr;
+    Atom* b = nullptr;
+    float min_length = 50.0f;
+    float k = 3.0f;
 
-    ForceEmitterType GetType();
+    StringForceConfig() {};
+    StringForceConfig(Atom* a, Atom* b) : a(a), b(b) {};
+    StringForceConfig(Atom* a, Atom* b, float min_length, float k)
+    : a(a), b(b), min_length(min_length), k(k) {};
+    ~StringForceConfig() {};
+
     bool ShouldTrigger(Atom*);
-    void ApplyForce(Atom*);
-
-    private:
-    vec2* origin_;
-    float range_;
+    void Apply(Atom*);
   };
 
-  class StringForceEmitter : ForceEmitter {
-    public:
-    StringForceEmitter();
+  struct DistanceForceConfig : ForceConfig {
+    vec2* origin;
+    float magnitude = 10;
+    float range = 100;
 
-    ForceEmitterType GetType();
+    DistanceForceConfig() {};
+    DistanceForceConfig(vec2* origin) : origin(origin) {};
+    DistanceForceConfig(vec2* origin, float magnitude, float range)
+    : origin(origin), magnitude(magnitude), range(range) {};
+    ~DistanceForceConfig() {};
+
     bool ShouldTrigger(Atom*);
-    void ApplyForce(Atom*);
-
-    private:
-    Atom* a_;
-    Atom* b_;
-    float min_trigger_;
+    void Apply(Atom*);
   };
 }

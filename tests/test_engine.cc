@@ -3,41 +3,38 @@
 
 using bitcoin::Atom;
 using bitcoin::Engine;
+using bitcoin::DistanceForceConfig;
 
 TEST_CASE("Test two atoms") {
   Atom *a = new Atom(), *b = new Atom();
   Engine *e = new Engine();
-  Force *fa = new Force(),
-        *fb = new Force();
   float f = 1000;
+  a->position = vec2(0, 0);
+  b->position = vec2(100, 0);
+  DistanceForceConfig
+    *fa = new DistanceForceConfig(&a->position, -f, 1000),
+    *fb = new DistanceForceConfig(&b->position, -f, 1000);
+
   e->AddAtom(a);
   e->AddAtom(b);
 
-  a->position = vec2(0, 0);
-  b->position = vec2(100, 0);
-  fa->SetPosition(&a->position);
-  fb->SetPosition(&b->position);
-  fa->magnitude = vec2(-f);
-  fb->magnitude = vec2(-f);
-  a->forces.push_back(fa);
-  a->forces.push_back(fb);
-  b->forces.push_back(fa);
-  b->forces.push_back(fb);
+  e->AddForce(fa);
+  e->AddForce(fb);
   e->Compute();
 
   float a_mag = f / 100;
+  float v_mag = a_mag / S;
+  float s_mag = v_mag / S;
   SECTION("two static atoms acceleration") {
     REQUIRE(a->acceleration == vec2(a_mag, 0));
     REQUIRE(b->acceleration == vec2(-a_mag, 0));
   };
 
-  float v_mag = a_mag / S;
   SECTION("two static atoms velocity") {
     REQUIRE(a->velocity == vec2(v_mag, 0));
     REQUIRE(b->velocity == vec2(-v_mag, 0));
   };
 
-  float s_mag = v_mag / S;
   SECTION("two static atoms position") {
     REQUIRE(a->position == vec2(s_mag, 0));
     REQUIRE(b->position == vec2(100 - s_mag, 0));

@@ -1,69 +1,43 @@
 #include "force.h"
 #include <exception>
 
-#define NOT_IMPLEMENTED -1;
+#define NOT_IMPLEMENTED -1
 
 namespace bitcoin
 {
-  ForceEmitterType ForceEmitter::GetType() {
-    throw NOT_IMPLEMENTED;
-  }
-
-  void ForceEmitter::TryApplyForce(Atom* atom) {
+  void ForceConfig::TryApply(Atom* atom) {
     if (ShouldTrigger(atom)) {
-      ApplyForce(atom);
+      Apply(atom);
     }
   }
 
-  bool ForceEmitter::ShouldTrigger(Atom* atom) {
-    return !expired;
-  }
-
-  void ForceEmitter::ApplyForce(Atom* atom) {
+  bool ForceConfig::ShouldTrigger(Atom*) {
     throw NOT_IMPLEMENTED;
   }
 
-  bool ForceEmitter::IsExpired() {
-    return expired;
+  void ForceConfig::Apply(Atom*) {
+    throw NOT_IMPLEMENTED;
   }
 
-  void ForceEmitter::SetExpired() {
-    expired = true;
+  void StringForceConfig::Apply(Atom* atom) {
+    return;
   }
 
-  // Distance Force Emitter
-  ForceEmitterType DistanceForceEmitter::GetType() {
-    return DISTANCE;
+  bool StringForceConfig::ShouldTrigger(Atom* atom) {
+    return !expired && glm::length(a->position - b->position) > min_length;
   }
 
-  bool DistanceForceEmitter::ShouldTrigger(Atom* atom) {
-    float distance = glm::length2(atom->position - *origin_);
-    return ForceEmitter::ShouldTrigger(atom)
-      && distance < range_ 
-      && distance > 0;
-  }
-
-  void DistanceForceEmitter::ApplyForce(Atom* atom) {
-    vec2 diff = atom->position - *origin_;
+  void DistanceForceConfig::Apply(Atom* atom) {
+    vec2 diff = atom->position - *origin;
     float distance = glm::length(diff);
     atom->acceleration -= vec2(
-      diff[0] == 0 ? 0 : (diff[0] < 0 ? magnitude_[0] : -magnitude_[0]),
-      diff[1] == 0 ? 0 : (diff[1] < 0 ? magnitude_[1] : -magnitude_[1])
+      diff[0] == 0 ? 0 : (diff[0] < 0 ? magnitude : -magnitude) / distance,
+      diff[1] == 0 ? 0 : (diff[1] < 0 ? magnitude : -magnitude) / distance
     );
   }
 
-  // String Force Emitter
-  ForceEmitterType StringForceEmitter::GetType() {
-    return STRING;
-  }
-
-  bool StringForceEmitter::ShouldTrigger(Atom* atom) {
-    return ForceEmitter::ShouldTrigger(atom)
-      && (atom == a_ || atom == b_) 
-      && glm::length(a_->position - b_->position) > min_trigger_;
-  }
-
-  void StringForceEmitter::ApplyForce(Atom* atom) {
-    return;
+  bool DistanceForceConfig::ShouldTrigger(Atom* atom) {
+    float distance = glm::length(atom->position - *origin);
+    return !expired && distance < range && distance > 0;
   }
 }
