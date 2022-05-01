@@ -1,7 +1,6 @@
 #pragma once
 #include "force.h"
 #include "mass.h"
-#include "renderables.h"
 #include "cinder/gl/gl.h"
 
 #define S 50.0f
@@ -15,7 +14,7 @@ namespace bitcoin
 
 class Engine {
   public:
-  void AddAtom(Atom*);
+  void AddShape(Atom*);
   void AddForce(ForceConfig*);
 
   void ComputeAcceleration();
@@ -25,12 +24,12 @@ class Engine {
 
   template<typename R, typename T>
   void AddMass(Mass<R, T>* mass) {
-    AddAtom(mass);
+    AddShape(mass);
     AddForce(mass);
   }
 
   private:
-  vector<Atom*> atoms_;
+  vector<Atom*> shapes_;
   vector<FrictionForceConfig*> frictions_;
   vector<StringForceConfig*> tensions_;
   vector<DistanceForceConfig*> gravities_;

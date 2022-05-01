@@ -15,8 +15,8 @@ TEST_CASE("Test two atoms") {
     *fa = new DistanceForceConfig(a, -f, 1000),
     *fb = new DistanceForceConfig(b, -f, 1000);
 
-  e->AddAtom(a);
-  e->AddAtom(b);
+  e->AddShape(a);
+  e->AddShape(b);
 
   e->AddForce(fa);
   e->AddForce(fb);

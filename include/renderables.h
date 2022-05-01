@@ -8,39 +8,39 @@ using glm::vec2;
 namespace bitcoin
 {
 
-  enum Renderables {
+  enum Shapes {
     PARTICLE,
     SQUARE,
     CIRCLE,
     LINE
   };
 
-  struct Renderable : Atom {
+  struct Shape : Atom {
     ci::Color color = ci::Color("red");
-    virtual Renderables GetType() const;
+    virtual Shapes GetType() const;
     virtual void Render();
   };
 
-  struct Square : Renderable {
+  struct Square : Shape {
     vec2 size;
-    Renderables GetType() const;
+    Shapes GetType() const;
     void Render();
   };
 
-  struct Circle : Renderable {
+  struct Circle : Shape {
     float radius;
-    Renderables GetType() const;
+    Shapes GetType() const;
     void Render();
   };
 
-  struct Line : Renderable {
+  struct Line : Shape {
     vec2* from;
     vec2* to;
 
     Line() {};
     Line(Atom* a, Atom* b) : from(&a->position), to(&b->position) {};
 
-    Renderables GetType() const;
+    Shapes GetType() const;
     void Render();
   };
 } // namespace bitcoin

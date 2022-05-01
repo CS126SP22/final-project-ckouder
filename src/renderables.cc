@@ -4,15 +4,15 @@ using cinder::Rectf;
 
 namespace bitcoin {
 
-Renderables Renderable::GetType() const {
+Shapes Shape::GetType() const {
   return PARTICLE;
 }
 
-void Renderable::Render() {
+void Shape::Render() {
   return;
 }
 
-Renderables Square::GetType() const {
+Shapes Square::GetType() const {
   return SQUARE;
 }
 
@@ -24,7 +24,7 @@ void Square::Render() {
   ));
 }
 
-Renderables Circle::GetType() const {
+Shapes Circle::GetType() const {
   return CIRCLE;
 }
 
@@ -33,7 +33,7 @@ void Circle::Render() {
   ci::gl::drawSolidCircle(position, radius);
 }
 
-Renderables Line::GetType() const {
+Shapes Line::GetType() const {
   return LINE;
 }
 

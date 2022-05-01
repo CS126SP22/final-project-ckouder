@@ -20,7 +20,7 @@ class BitcoinApp : public ci::app::App {
   const int kWindowHeight = 800;
   const int kWindowWidth = 600;
   Engine engine = Engine();
-  std::vector<Renderable*> objects;
+  std::vector<Shape*> objects;
   ci::Color frame_color = ci::Color("white");
 };
 

@@ -4,12 +4,11 @@
 namespace bitcoin
 {
 
-  void Engine::AddAtom(Atom* atom) {
-    atoms_.push_back(atom);
+  void Engine::AddShape(Atom* shape) {
+    shapes_.push_back(shape);
   }
 
   void Engine::AddForce(ForceConfig* config) {
-
     switch (config->GetType()) {
       case FRICTION:
         frictions_.push_back((FrictionForceConfig*)config);
@@ -30,7 +29,7 @@ namespace bitcoin
     for (auto force : tensions_) {
       force->TryApply(nullptr);
     }
-    for (auto atom : atoms_) {
+    for (auto atom : shapes_) {
       for (auto force : gravities_) {
         force->TryApply(atom);
       }
@@ -51,10 +50,10 @@ namespace bitcoin
 
   void Engine::Compute() {
     ComputeAcceleration();
-    for (auto atom : atoms_) {
+    for (auto atom : shapes_) {
       ComputeVelocity(atom);
     }
-    for (auto atom : atoms_) {
+    for (auto atom : shapes_) {
       ComputePosition(atom);
     }
   }
