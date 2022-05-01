@@ -41,8 +41,8 @@ namespace bitcoin {
   void BitcoinApp::draw() {
     ci::Color background_color("black");
     ci::gl::clear(background_color);
-    for (Renderable* Renderable : objects) {
-      Render(Renderable);
+    for (Renderable* object : objects) {
+      object->Render();
     }
   }
 

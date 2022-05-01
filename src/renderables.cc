@@ -8,41 +8,38 @@ Renderables Renderable::GetType() const {
   return PARTICLE;
 }
 
+void Renderable::Render() {
+  return;
+}
+
 Renderables Square::GetType() const {
   return SQUARE;
+}
+
+void Square::Render() {
+  ci::gl::color(color);
+  ci::gl::drawSolidRect(Rectf(
+    position - size / vec2(2),
+    position + size / vec2(2)
+  ));
 }
 
 Renderables Circle::GetType() const {
   return CIRCLE;
 }
 
+void Circle::Render() {
+  ci::gl::color(color);
+  ci::gl::drawSolidCircle(position, radius);
+}
+
 Renderables Line::GetType() const {
   return LINE;
 }
 
-void Render(const Renderable* object) {
-    const vec2& position = object->position;
-    ci::gl::color(object->color);
-    switch (object->GetType()) {
-
-      case SQUARE:
-        ci::gl::drawSolidRect(Rectf(
-          position - (((Square*)object)->size) / vec2(2),
-          position + (((Square*)object)->size) / vec2(2)
-        ));
-        break;
-
-      case CIRCLE:
-        ci::gl::drawSolidCircle(position, ((Circle*)object)->radius);
-        break;
-
-      case LINE:
-        ci::gl::drawLine(position, *(((Line*)object)->to));
-        break;
-
-      case PARTICLE:
-        break;
-    }
+void Line::Render() {
+  ci::gl::color(color);
+  ci::gl::drawLine(position, *end);
 }
 
 }// namespace bitcoin
