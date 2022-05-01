@@ -12,8 +12,8 @@ TEST_CASE("Test two atoms") {
   a->position = vec2(0, 0);
   b->position = vec2(100, 0);
   DistanceForceConfig
-    *fa = new DistanceForceConfig(&a->position, -f, 1000),
-    *fb = new DistanceForceConfig(&b->position, -f, 1000);
+    *fa = new DistanceForceConfig(a, -f, 1000),
+    *fb = new DistanceForceConfig(b, -f, 1000);
 
   e->AddAtom(a);
   e->AddAtom(b);

@@ -3,22 +3,46 @@
 
 namespace bitcoin
 {
+
   void Engine::AddAtom(Atom* atom) {
     atoms_.push_back(atom);
   }
 
   void Engine::AddForce(ForceConfig* config) {
-    forces_.push_back(config);
+
+    switch (config->GetType()) {
+      case FRICTION:
+        frictions_.push_back((FrictionForceConfig*)config);
+        break;
+      case STRING:
+        tensions_.push_back((StringForceConfig*)config);
+        break;
+      case DISTANCE:
+        gravities_.push_back((DistanceForceConfig*)config);
+        break;
+      case NA:
+        throw -1;
+        break;
+    };
   }
 
-  void Engine::ComputeAcceleration(Atom* atom) {
-    for (auto force : forces_) {
-      force->TryApply(atom);
+  void Engine::ComputeAcceleration() {
+    for (auto force : tensions_) {
+      force->TryApply(nullptr);
+    }
+    for (auto atom : atoms_) {
+      for (auto force : gravities_) {
+        force->TryApply(atom);
+      }
+      for (auto force : frictions_) {
+        force->TryApply(atom);
+      }
     }
   }
 
   void Engine::ComputeVelocity(Atom* atom) {
     atom->velocity += atom->acceleration / S;
+    atom->acceleration = vec2(0, 0);
   }
 
   void Engine::ComputePosition(Atom* atom) {
@@ -26,9 +50,7 @@ namespace bitcoin
   }
 
   void Engine::Compute() {
-    for (auto atom : atoms_) {
-      ComputeAcceleration(atom);
-    }
+    ComputeAcceleration();
     for (auto atom : atoms_) {
       ComputeVelocity(atom);
     }

@@ -22,6 +22,8 @@ else()
     add_compile_options(-Wall -Wpedantic -Werror)
 endif()
 
+add_compile_options(-DDEBUG)
+
 # FetchContent added in CMake 3.11, downloads during the configure step
 include(FetchContent)
 
