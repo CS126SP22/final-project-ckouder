@@ -53,11 +53,12 @@ include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
 list(APPEND CORE_SOURCE_FILES src/engine.cc
                               src/force.cc
-                              src/visualizer.cc
                               src/renderables.cc
                               src/network.cc)
 
-list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES})
+list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
+                            src/mass.cc
+                            src/visualizer.cc)
 
 list(APPEND TEST_FILES  tests/test_engine.cc
                         tests/test_network.cc

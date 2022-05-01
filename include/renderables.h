@@ -34,7 +34,12 @@ namespace bitcoin
   };
 
   struct Line : Renderable {
-    vec2* end;
+    vec2* from;
+    vec2* to;
+
+    Line() {};
+    Line(Atom* a, Atom* b) : from(&a->position), to(&b->position) {};
+
     Renderables GetType() const;
     void Render();
   };

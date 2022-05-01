@@ -33,8 +33,8 @@ namespace bitcoin
   struct StringForceConfig : ForceConfig {
     Atom* a = nullptr;
     Atom* b = nullptr;
-    float length = 50.0f;
-    float k = 100.0f;
+    float length = 100.0f;
+    float k = 10.0f;
     float negk = 100.0f;
 
     StringForceConfig() {};
@@ -49,7 +49,7 @@ namespace bitcoin
   };
 
   struct DistanceForceConfig : ForceConfig {
-    float magnitude = 10;
+    float magnitude = -10;
     float range = 100;
 
     DistanceForceConfig() {};

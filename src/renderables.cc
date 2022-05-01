@@ -39,7 +39,7 @@ Renderables Line::GetType() const {
 
 void Line::Render() {
   ci::gl::color(color);
-  ci::gl::drawLine(position, *end);
+  ci::gl::drawLine(*from, *to);
 }
 
 }// namespace bitcoin
