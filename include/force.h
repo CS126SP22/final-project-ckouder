@@ -5,10 +5,16 @@ using glm::vec2;
 
 namespace bitcoin
 {
+  enum AtomStatus {
+    FREEZED,
+    ACTIVE
+  };
+
   struct Atom {
     vec2 position = vec2(0);
     vec2 velocity = vec2(0);
     vec2 acceleration = vec2(0);
+    AtomStatus status = ACTIVE;
   };
 
   enum ForceType {

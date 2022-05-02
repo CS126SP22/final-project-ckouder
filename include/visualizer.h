@@ -5,6 +5,7 @@
 #include "cinder/gl/gl.h"
 #include "engine.h"
 #include "renderables.h"
+#include "config.h"
 
 namespace bitcoin
 {
@@ -17,11 +18,12 @@ class BitcoinApp : public ci::app::App {
   void update() override;
 
  private:
-  const int kWindowHeight = 800;
-  const int kWindowWidth = 600;
-  Engine engine = Engine();
-  std::vector<Shape*> objects;
-  ci::Color frame_color = ci::Color("white");
+  const int kWindowHeight = WINDOW_HEIGHT;
+  const int kWindowWidth = WINDOW_WIDTH;
+  const ci::Color kFrameColor = ci::Color(FRAME_COLOR);
+  const ci::Color kBackgroundColor = ci::Color(BACKGROUND_COLOR);
+  Engine engine_ = Engine();
+  std::vector<Shape*> objects_;
 };
 
 } // namespace bitcoin
