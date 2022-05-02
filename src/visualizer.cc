@@ -21,6 +21,7 @@ namespace bitcoin {
     string->color = ci::Color("white");
     ball1->color = ci::Color("blue");
     ball2->color = ci::Color("green");
+    ball1->status = FREEZED;
 
     objects_.push_back(ball1);
     objects_.push_back(ball2);

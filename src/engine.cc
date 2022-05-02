@@ -40,12 +40,16 @@ namespace bitcoin
   }
 
   void Engine::ComputeVelocity(Atom* atom) {
-    atom->velocity += atom->acceleration / S;
+    if (atom->status != FREEZED) {
+      atom->velocity += atom->acceleration / S;
+    }
     atom->acceleration = vec2(0, 0);
   }
 
   void Engine::ComputePosition(Atom* atom) {
-    atom->position += atom->velocity / S;
+    if (atom->status != FREEZED) {
+      atom->position += atom->velocity / S;
+    }
   }
 
   void Engine::Compute() {

@@ -81,9 +81,12 @@ namespace bitcoin
 
   struct FrictionForceConfig : ForceConfig {
     float magnitude = 0.3;
+    float threshold = 1;
 
     FrictionForceConfig() {};
     FrictionForceConfig(float magnitude) : magnitude(magnitude) {};
+    FrictionForceConfig(float magnitude, float threshold)
+     : magnitude(magnitude), threshold(threshold) {};
     ~FrictionForceConfig() {};
 
     bool ShouldTrigger(Atom*);

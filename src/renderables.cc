@@ -3,8 +3,8 @@
 
 using cinder::Rectf;
 
-#define FREEZE_FRAME_WIDTH 2
-#define FREEZE_FRAME_MARGIN 2
+#define FREEZE_FRAME_WIDTH 1
+#define FREEZE_FRAME_MARGIN 1
 
 namespace bitcoin {
 
