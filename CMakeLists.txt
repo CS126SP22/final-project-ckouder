@@ -64,7 +64,8 @@ get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 
 include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
-list(APPEND CORE_SOURCE_FILES src/mass.cc
+list(APPEND CORE_SOURCE_FILES src/json.cc 
+                              src/mass.cc
                               src/engine.cc
                               src/force.cc
                               src/renderables.cc
@@ -73,7 +74,8 @@ list(APPEND CORE_SOURCE_FILES src/mass.cc
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
                             src/visualizer.cc)
 
-list(APPEND TEST_FILES  tests/test_engine.cc
+list(APPEND TEST_FILES  tests/test_json.cc
+                        tests/test_engine.cc
                         tests/test_network.cc
                         tests/test_visualizer.cc)
 

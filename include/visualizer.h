@@ -6,6 +6,7 @@
 #include "engine.h"
 #include "renderables.h"
 #include "config.h"
+#include "json.h"
 
 using cinder::app::MouseEvent;
 using glm::ivec2;
