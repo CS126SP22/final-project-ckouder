@@ -5,7 +5,7 @@
 #endif
 
 #ifndef FRAME_COLOR
-  #define FRAME_COLOR "white"
+  #define FRAME_COLOR "grey"
 #endif
 
 #ifndef WINDOW_HEIGHT

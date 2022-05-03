@@ -37,11 +37,54 @@ namespace bitcoin {
     ci::Color background_color("black");
     ci::gl::clear(background_color);
     for (Shape* object : objects_) {
-      object->Render();
+      object->Render(drag_acc_);
     }
   }
 
   void BitcoinApp::update() {
     engine_.Compute();
+  }
+
+  void BitcoinApp::mouseDown(MouseEvent event) {
+    Shape* target = FindShapeAtPos(GetRealShapePos(event.getPos()));
+    if (target != nullptr) {
+      if (event.isLeft()) {
+        target->status = FREEZED;
+      } else if (event.isRight()) {
+        target->status = ACTIVE;
+      }
+    }
+  }
+
+  void BitcoinApp::mouseMove(MouseEvent event) {
+    drag_ = event.getPos();
+  }
+
+  void BitcoinApp::mouseDrag(MouseEvent event) {
+    Shape* target = FindShapeAtPos(GetRealShapePos(event.getPos()));
+    if (target != nullptr) {
+      target->status = FREEZED;
+      target->position = GetRealShapePos(event.getPos());
+    } else {
+      drag_acc_ += event.getPos() - drag_;
+      drag_ = event.getPos();
+    }
+  }
+
+  void BitcoinApp::mouseWheel(MouseEvent event) {
+    // scale view
+  }
+
+  Shape* BitcoinApp::FindShapeAtPos(const vec2 & coordinate) {
+    for (Shape* object : objects_) {
+      if (glm::length(coordinate - object->position) <= kTolerance) {
+        return object;
+      }
+    }
+    return nullptr;
+  }
+
+  ivec2 BitcoinApp::GetRealShapePos(const ivec2 & position) {
+    return position - drag_acc_;
   }
 } // namespace bitcoin
