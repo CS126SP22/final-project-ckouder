@@ -22,8 +22,8 @@ class Engine {
   void ComputePosition(Atom*);
   void Compute();
 
-  template<typename R, typename T>
-  void AddMass(Mass<R, T>* mass) {
+  template<typename R, typename F>
+  void AddMass(Mass<R, F>* mass) {
     AddShape(mass);
     AddForce(mass);
   }

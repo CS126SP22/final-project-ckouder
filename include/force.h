@@ -60,6 +60,7 @@ namespace bitcoin
 
     DistanceForceConfig() {};
     DistanceForceConfig(vec2 origin) : origin_(origin) {};
+    DistanceForceConfig(Atom* ref) : ref_(ref) {};
     DistanceForceConfig(vec2 origin, float magnitude, float range)
     : magnitude(magnitude), range(range), origin_(origin) {};
     DistanceForceConfig(Atom* ref, float magnitude, float range)
@@ -68,10 +69,11 @@ namespace bitcoin
 
     bool ShouldTrigger(Atom*);
     void Apply(Atom*);
-    vec2 GetOrigin();
-    void SetOrigin(Atom*);
-    void SetOrigin(vec2);
     ForceType GetType();
+
+    virtual vec2 GetOrigin();
+    virtual void SetOrigin(Atom*);
+    virtual void SetOrigin(vec2);
 
     private:
     vec2 origin_ = vec2(0, 0);

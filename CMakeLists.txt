@@ -38,6 +38,11 @@ FetchContent_Declare(
     GIT_TAG v2.x
 )
 
+FetchContent_Declare(
+    json 
+    URL https://github.com/nlohmann/json/releases/download/v3.10.5/json.tar.xz
+)
+
 # Adds Catch2 testing library
 FetchContent_GetProperties(catch2)
 if(NOT catch2_POPULATED)
@@ -46,18 +51,26 @@ if(NOT catch2_POPULATED)
     target_include_directories(catch2 INTERFACE ${catch2_SOURCE_DIR}/single_include)
 endif()
 
+# Adds json library
+FetchContent_GetProperties(json)
+if(NOT json_POPULATED)
+    FetchContent_Populate(json)
+    add_library(json INTERFACE)
+    target_include_directories(json INTERFACE ${json_SOURCE_DIR}/single_include)
+endif()
+
 get_filename_component(CINDER_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../" ABSOLUTE)
 get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 
 include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
-list(APPEND CORE_SOURCE_FILES src/engine.cc
+list(APPEND CORE_SOURCE_FILES src/mass.cc
+                              src/engine.cc
                               src/force.cc
                               src/renderables.cc
                               src/network.cc)
 
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
-                            src/mass.cc
                             src/visualizer.cc)
 
 list(APPEND TEST_FILES  tests/test_engine.cc
@@ -69,6 +82,7 @@ ci_make_app(
         CINDER_PATH     ${CINDER_PATH}
         SOURCES         apps/main.cc ${SOURCE_FILES}
         INCLUDES        include
+        LIBRARIES       json
 )
 
 ci_make_app(
@@ -76,7 +90,7 @@ ci_make_app(
         CINDER_PATH     ${CINDER_PATH}
         SOURCES         tests/test_main.cc ${SOURCE_FILES} ${TEST_FILES}
         INCLUDES        include
-        LIBRARIES       catch2
+        LIBRARIES       catch2 json
 )
 
 if(MSVC)

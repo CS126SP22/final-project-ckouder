@@ -16,7 +16,14 @@ namespace bitcoin {
     Constraint(Atom* a, Atom* b) : Mass<R, F>(a, b) {};
   };
 
-  typedef Mass<struct Circle, struct DistanceForceConfig> Ball;
-  typedef Mass<struct Square, struct DistanceForceConfig> Box;
+  template <typename R>
+  struct PointMass : Mass<R, DistanceForceConfig> {
+    virtual vec2 GetOrigin() override;
+    virtual void SetOrigin(Atom*) override;
+    virtual void SetOrigin(vec2) override;
+  };
+
+  typedef PointMass<struct Circle> Ball;
+  typedef PointMass<struct Square> Box;
   typedef Constraint<struct Line, struct StringForceConfig> String;
 }
