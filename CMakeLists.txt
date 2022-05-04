@@ -39,6 +39,11 @@ FetchContent_Declare(
 )
 
 FetchContent_Declare(
+    boost
+    URL https://boostorg.jfrog.io/artifactory/main/release/1.79.0/source/boost_1_79_0.zip
+)
+
+FetchContent_Declare(
     json 
     URL https://github.com/nlohmann/json/releases/download/v3.10.5/json.tar.xz
 )
@@ -58,6 +63,15 @@ if(NOT json_POPULATED)
     add_library(json INTERFACE)
     target_include_directories(json INTERFACE ${json_SOURCE_DIR}/single_include)
 endif()
+
+# Adds boost library
+FetchContent_GetProperties(boost)
+if(NOT boost_POPULATED)
+    FetchContent_Populate(boost)
+    add_subdirectory(${boost_SOURCE_DIR} ${boost_BINARY_DIR})
+endif()
+
+find_package (Boost 1.55.0 REQUIRED COMPONENTS beast)
 
 get_filename_component(CINDER_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../" ABSOLUTE)
 get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
@@ -84,7 +98,7 @@ ci_make_app(
         CINDER_PATH     ${CINDER_PATH}
         SOURCES         apps/main.cc ${SOURCE_FILES}
         INCLUDES        include
-        LIBRARIES       json
+        LIBRARIES       json beast
 )
 
 ci_make_app(

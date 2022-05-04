@@ -17,13 +17,14 @@ namespace bitcoin {
   };
 
   template <typename R>
-  struct PointMass : Mass<R, DistanceForceConfig> {
+  struct AbstractPointMass : Mass<R, DistanceForceConfig> {
     virtual vec2 GetOrigin() override;
     virtual void SetOrigin(Atom*) override;
     virtual void SetOrigin(vec2) override;
   };
 
-  typedef PointMass<struct Circle> Ball;
-  typedef PointMass<struct Square> Box;
+  typedef AbstractPointMass<struct Shape> PointMass;
+  typedef AbstractPointMass<struct Circle> Ball;
+  typedef AbstractPointMass<struct Square> Box;
   typedef Constraint<struct Line, struct StringForceConfig> String;
 }

@@ -14,6 +14,26 @@ using glm::ivec2;
 namespace bitcoin
 {
 
+enum TransactionType {
+  INPUT,
+  OUTPUT,
+  MIXED,
+  TRANSACTION
+};
+
+struct TransactionObject {
+  std::string from = "";
+  std::string to = "";
+  int value = 0;
+  TransactionType type = TRANSACTION;
+  Box* mass = nullptr;
+
+  TransactionObject () {};
+  TransactionObject(
+    TransactionType type, std::string from, std::string to, int value
+    ) : from(from), to(to), value(value), type(type) {};
+};
+
 class BitcoinApp : public ci::app::App {
  public:
   BitcoinApp();
@@ -32,12 +52,18 @@ class BitcoinApp : public ci::app::App {
   const ci::Color kFrameColor = ci::Color(FRAME_COLOR);
   const ci::Color kBackgroundColor = ci::Color(BACKGROUND_COLOR);
   Engine engine_ = Engine();
-  std::vector<Shape*> objects_;
+  std::map<std::string, TransactionObject*> transaction_map_;
+  std::vector<String*> links_;
+  std::string address_string_ = "";
+  std::string balance_string_ = "";
   ivec2 drag_acc_ = vec2(0);
   ivec2 drag_ = vec2(0);
 
-  Shape* FindShapeAtPos(const vec2 &);
+  TransactionObject* FindNodeAt(const vec2 &);
   ivec2 GetRealShapePos(const ivec2 &);
+  void AddTransaction(Transaction);
+  String* AddLink(Shape*, Shape*);
+  Box* CreateMassFor(TransactionObject*);
 };
 
 } // namespace bitcoin

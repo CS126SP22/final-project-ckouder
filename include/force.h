@@ -12,7 +12,7 @@ namespace bitcoin
 
   struct Atom {
     vec2 position = vec2(0);
-    vec2 velocity = vec2(0);
+    vec2 velocity = vec2(rand() % 5, rand() % 5);
     vec2 acceleration = vec2(0);
     AtomStatus status = ACTIVE;
   };
@@ -39,7 +39,7 @@ namespace bitcoin
   struct StringForceConfig : ForceConfig {
     Atom* a = nullptr;
     Atom* b = nullptr;
-    float length = 100.0f;
+    float length = 40.0f;
     float k = 10.0f;
     float negk = 100.0f;
 
@@ -55,7 +55,7 @@ namespace bitcoin
   };
 
   struct DistanceForceConfig : ForceConfig {
-    float magnitude = -10;
+    float magnitude = 10;
     float range = 100;
 
     DistanceForceConfig() {};

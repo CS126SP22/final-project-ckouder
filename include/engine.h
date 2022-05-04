@@ -24,8 +24,8 @@ class Engine {
 
   template<typename R, typename F>
   void AddMass(Mass<R, F>* mass) {
-    AddShape(mass);
     AddForce(mass);
+    AddShape(mass);
   }
 
   private:

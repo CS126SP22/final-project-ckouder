@@ -5,10 +5,16 @@ namespace bitcoin
 {
 
   void Engine::AddShape(Atom* shape) {
+    if (std::find(shapes_.begin(), shapes_.end(), shape) != shapes_.end()) {
+      return;
+    }
     shapes_.push_back(shape);
   }
 
   void Engine::AddForce(ForceConfig* config) {
+    if (std::find(frictions_.begin(), frictions_.end(), config) != frictions_.end()) {
+      return;
+    }
     switch (config->GetType()) {
       case FRICTION:
         frictions_.push_back((FrictionForceConfig*)config);

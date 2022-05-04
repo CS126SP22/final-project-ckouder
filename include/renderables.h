@@ -15,19 +15,19 @@ namespace bitcoin
   };
 
   struct Shape : Atom {
-    ci::Color color = ci::Color("red");
+    ci::Color color = ci::Color("grey");
     virtual Shapes GetType() const;
     virtual void Render(vec2);
   };
 
   struct Square : Shape {
-    vec2 size;
+    vec2 size = vec2(10);
     Shapes GetType() const;
     void Render(vec2);
   };
 
   struct Circle : Shape {
-    float radius;
+    float radius = 5;
     Shapes GetType() const;
     void Render(vec2);
   };

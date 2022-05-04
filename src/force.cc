@@ -2,6 +2,7 @@
 #include <exception>
 
 #define NOT_IMPLEMENTED -1
+#define MIN_FORCE 3
 
 namespace bitcoin
 {
@@ -25,7 +26,7 @@ namespace bitcoin
 
   void StringForceConfig::Apply(Atom* atom) {
     vec2 diff = a->position - b->position;
-    float distance = glm::length(diff);
+    float distance = glm::length(diff) > MIN_FORCE ? glm::length(diff) : MIN_FORCE;
     float coe = distance - length;
     coe = -coe * (coe < 0 ? negk : k);
 
@@ -55,7 +56,7 @@ namespace bitcoin
 
   void DistanceForceConfig::Apply(Atom* atom) {
     vec2 diff = atom->position - GetOrigin();
-    float distance = glm::length(diff) > 1 ? glm::length(diff) : 1;
+    float distance = glm::length(diff) > MIN_FORCE ? glm::length(diff) : MIN_FORCE;
     float x_acc = diff[0] == 0 ? 0 : (diff[0] > 0 ? magnitude : -magnitude) / distance,
           y_acc = diff[1] == 0 ? 0 : (diff[1] > 0 ? magnitude : -magnitude) / distance;
 
